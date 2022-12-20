@@ -1,12 +1,12 @@
 import {connect} from "react-redux";
 import {useState} from "react";
-import {postStudent} from "../../../state/student/studentAddAction";
+import {callPostStudentApi} from "../../../state/student/studentAddAction";
 
 const StudentPage = (props) => {
-    const {studentAdd, postStudent} = props;
+    const {studentAdd, callPostStudentApi} = props;
     const [name, setName] = useState('');
     const [age, setAge] = useState('');
-    const onAddStudent = () => postStudent({name, age});
+    const onAddStudent = () => callPostStudentApi({name, age});
 
     const onNameChange = (event) => setName(event.target.value);
 
@@ -25,11 +25,7 @@ const StudentPage = (props) => {
     );
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        postStudent: postStudent(dispatch)
-    }
-}
+const mapDispatchToProps = {callPostStudentApi}
 const mapStateToProps = state => {
     return {studentAdd: state.studentAddReducer};
 };
