@@ -1,20 +1,12 @@
 import {connect} from "react-redux";
 import {useState} from "react";
-import {failAddStudent, finishAddStudent, startAddStudent} from "../../../state/student/studentAddAction";
+import {postStudent} from "../../../state/student/studentAddAction";
 
 const StudentPage = (props) => {
-    const {studentAdd, startAddStudent, finishAddStudent, failAddStudent} = props;
+    const {studentAdd, postStudent} = props;
     const [name, setName] = useState('');
     const [age, setAge] = useState('');
-    const onAddStudent = async () => {
-        startAddStudent();
-        try {
-            await finishAddStudent({name, age});
-        } catch (e) {
-            console.log(e);
-            failAddStudent(e);
-        }
-    }
+    const onAddStudent = () => postStudent({name, age});
 
     const onNameChange = (event) => setName(event.target.value);
 
@@ -33,8 +25,10 @@ const StudentPage = (props) => {
     );
 }
 
-const mapDispatchToProps = {
-    startAddStudent, finishAddStudent, failAddStudent
+const mapDispatchToProps = dispatch => {
+    return {
+        postStudent: postStudent(dispatch)
+    }
 }
 const mapStateToProps = state => {
     return {studentAdd: state.studentAddReducer};

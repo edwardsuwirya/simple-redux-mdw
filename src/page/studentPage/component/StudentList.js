@@ -1,24 +1,12 @@
 import {connect} from "react-redux";
-import studentApi from "../../../api/studentApi";
 import {useEffect} from "react";
-import {failListStudent, finishListStudent, startListStudent} from "../../../state/student/studentListAction";
+import {getStudent} from "../../../state/student/studentListAction";
 
 const StudentList = (props) => {
-    const {studentList, startListStudent, finishListStudent, failListStudent} = props;
-    const {studentGet} = studentApi();
+    const {studentList, getStudent} = props;
 
     useEffect(() => {
-        const fetchData = async () => {
-            startListStudent();
-            try {
-                const data = await studentGet();
-                finishListStudent(data);
-            } catch (e) {
-                failListStudent(e);
-            }
-
-        }
-        fetchData();
+        getStudent();
     }, [])
     const onGetStudent = () => {
         let sList = [];
@@ -37,8 +25,10 @@ const StudentList = (props) => {
         </div>
     )
 }
-const mapDispatchToProps = {
-    startListStudent, finishListStudent, failListStudent
+const mapDispatchToProps = dispatch => {
+    return {
+        getStudent: getStudent(dispatch)
+    }
 }
 const mapStateToProps = state => {
     return {studentList: state.studentListReducer};
