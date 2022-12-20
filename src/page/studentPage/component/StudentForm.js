@@ -1,19 +1,17 @@
 import {connect} from "react-redux";
 import {useState} from "react";
 import {failAddStudent, finishAddStudent, startAddStudent} from "../../../state/student/studentAddAction";
-import studentApi from "../../../api/studentApi";
 
 const StudentPage = (props) => {
     const {studentAdd, startAddStudent, finishAddStudent, failAddStudent} = props;
-    const {studentPost} = studentApi();
     const [name, setName] = useState('');
     const [age, setAge] = useState('');
     const onAddStudent = async () => {
         startAddStudent();
         try {
-            const newStudent = await studentPost({name, age});
-            finishAddStudent(newStudent);
+            await finishAddStudent({name, age});
         } catch (e) {
+            console.log(e);
             failAddStudent(e);
         }
     }
