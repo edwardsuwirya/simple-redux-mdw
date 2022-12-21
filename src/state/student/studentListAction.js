@@ -1,6 +1,16 @@
-import {STUDENT_LIST_FAILED, STUDENT_LIST_FINISHED, STUDENT_LIST_STARTED} from "../../constants";
-import studentApi from "../../api/studentApi";
-import {apiAction} from "../apiAction";
+import {
+    STUDENT_LIST_FAILED,
+    STUDENT_LIST_FINISHED,
+    STUDENT_LIST_REQUESTED,
+    STUDENT_LIST_STARTED
+} from "../../constants";
+
+export const requestListStudent = () => {
+    return {
+        type: STUDENT_LIST_REQUESTED,
+    }
+}
+
 
 export const startListStudent = () => {
     return {
@@ -15,15 +25,15 @@ export const successListStudent = (students) => {
         }
     }
 }
-export const callListStudentApi = () => {
-    const {studentGet} = studentApi();
-    return apiAction({
-        url: () => studentGet(),
-        onLoading: startListStudent,
-        onSuccess: successListStudent,
-        onFailure: failListStudent
-    });
-}
+// export const callListStudentApi = () => {
+//     const {studentGet} = studentApi();
+//     return apiAction({
+//         url: () => studentGet(),
+//         onLoading: startListStudent,
+//         onSuccess: successListStudent,
+//         onFailure: failListStudent
+//     });
+// }
 
 export const failListStudent = (error) => {
     return {
@@ -33,3 +43,4 @@ export const failListStudent = (error) => {
         }
     }
 }
+

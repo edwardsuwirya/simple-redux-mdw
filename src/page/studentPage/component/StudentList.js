@@ -1,12 +1,12 @@
 import {connect} from "react-redux";
 import {useEffect} from "react";
-import {callListStudentApi} from "../../../state/student/studentListAction";
+import {requestListStudent} from "../../../state/student/studentListAction";
 
 const StudentList = (props) => {
-    const {studentList, callListStudentApi} = props;
+    const {studentList, requestListStudent} = props;
 
     useEffect(() => {
-        callListStudentApi();
+        requestListStudent();
     }, [])
     const onGetStudent = () => {
         let sList = [];
@@ -26,7 +26,7 @@ const StudentList = (props) => {
     )
 }
 const mapDispatchToProps = {
-    callListStudentApi
+    requestListStudent
 }
 const mapStateToProps = state => {
     return {studentList: state.studentListReducer};

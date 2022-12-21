@@ -5,6 +5,7 @@ const studentApi = () => {
             setTimeout(() => {
                 studentList.push(student);
                 resolve(student);
+                // reject('error');
             }, 1000)
         })
     }
