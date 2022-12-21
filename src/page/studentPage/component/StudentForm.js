@@ -14,10 +14,12 @@ const StudentPage = (props) => {
 
     return (
         <div>
-            <label>First Name</label>
-            <input type='text' value={name} onChange={onNameChange}/>
-            <label>Age</label>
-            <input type='text' value={age} onChange={onAgeChange}/>
+            <label htmlFor='fname' style={{display: 'block'}}>First Name</label>
+            <input id='fname' type='text' value={name} onChange={onNameChange}/>
+            <br/>
+            <label htmlFor='age' style={{display: 'block'}}>Age</label>
+            <input id='age' type='text' value={age} onChange={onAgeChange}/>
+            <br/>
             <button onClick={onAddStudent}>Add</button>
             {studentAdd.loading && <div>Loading</div>}
             {studentAdd.student && <div>{studentAdd.student.name}</div>}

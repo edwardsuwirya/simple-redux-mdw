@@ -5,7 +5,7 @@ import {useState} from "react";
 const StudentPage = () => {
     const [view, setView] = useState('0');
     return (
-        <div>
+        <div style={{textAlign: 'left',margin:'10px'}}>
             {view === '0' && (
                 <div>
                     <button onClick={() => setView('1')}>List</button>
