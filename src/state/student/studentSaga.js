@@ -4,19 +4,24 @@ import {failAddStudent, startAddStudent, successAddStudent} from "./studentAddAc
 import {failListStudent, startListStudent, successListStudent} from "./studentListAction";
 import {call, put, takeLatest} from 'redux-saga/effects';
 
-function* callPostStudentApi(action) {
+function* postStudentApiWorker(action) {
     const {studentPost} = studentApi();
     yield put(startAddStudent());
     try {
+        /*
+            call(asyncFn, ...parameter) = execute async function
+         */
         const newStudent = yield call(studentPost, action.payload.student);
+        /*
+            put(redux_action) = dispatch action
+         */
         yield put(successAddStudent(newStudent));
     } catch (e) {
-        console.log(e);
         yield put(failAddStudent(e));
     }
 }
 
-function* callListStudentApi() {
+function* listStudentApiWorker() {
     const {studentGet} = studentApi();
     yield put(startListStudent());
     try {
@@ -28,11 +33,11 @@ function* callListStudentApi() {
 }
 
 function* postStudentWatcher() {
-    yield takeLatest(STUDENT_ADD_REQUESTED, callPostStudentApi);
+    yield takeLatest(STUDENT_ADD_REQUESTED, postStudentApiWorker);
 }
 
 function* getStudentWatcher() {
-    yield takeLatest(STUDENT_LIST_REQUESTED, callListStudentApi);
+    yield takeLatest(STUDENT_LIST_REQUESTED, listStudentApiWorker);
 }
 
 export const studentSaga = [

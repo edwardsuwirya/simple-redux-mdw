@@ -3,7 +3,7 @@ import {useState} from "react";
 import {requestAddStudent} from "../../../state/student/studentAddAction";
 
 const StudentPage = (props) => {
-    const {studentAdd, requestAddStudent} = props;
+    const {student: {loading, student}, requestAddStudent} = props;
     const [name, setName] = useState('');
     const [age, setAge] = useState('');
     const onAddStudent = () => requestAddStudent({name, age});
@@ -21,15 +21,15 @@ const StudentPage = (props) => {
             <input id='age' type='text' value={age} onChange={onAgeChange}/>
             <br/>
             <button onClick={onAddStudent}>Add</button>
-            {studentAdd.loading && <div>Loading</div>}
-            {studentAdd.student && <div>{studentAdd.student.name}</div>}
+            {loading && <div>Loading</div>}
+            {student && <div>{student.name}</div>}
         </div>
     );
 }
 
 const mapDispatchToProps = {requestAddStudent}
 const mapStateToProps = state => {
-    return {studentAdd: state.studentAddReducer};
+    return {student: state.studentAddReducer};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudentPage);
