@@ -6,7 +6,15 @@ const StudentPage = (props) => {
     const {student: {loading, student}, requestAddStudent} = props;
     const [name, setName] = useState('');
     const [age, setAge] = useState('');
-    const onAddStudent = () => requestAddStudent({name, age});
+    const onAddStudent = () => {
+        // requestAddStudent({name, age});
+
+        //Action channel will buffer these 3 requests
+        // if using buffers none, only first loop will be printed
+        for (let i = 0; i <= 3; i++) {
+            requestAddStudent({name: i, age: i})
+        }
+    };
 
     const onNameChange = (event) => setName(event.target.value);
 

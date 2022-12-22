@@ -2,7 +2,8 @@ import studentApi from "../../api/studentApi";
 import {STUDENT_ADD_REQUESTED, STUDENT_LIST_REQUESTED} from "../../constants";
 import {failAddStudent, startAddStudent, successAddStudent} from "./studentAddAction";
 import {failListStudent, startListStudent, successListStudent} from "./studentListAction";
-import {call, put, takeLatest} from 'redux-saga/effects';
+import {buffers} from 'redux-saga';
+import {call, put, take, actionChannel, takeLatest} from 'redux-saga/effects';
 
 function* postStudentApiWorker(action) {
     const {studentPost} = studentApi();
@@ -32,8 +33,28 @@ function* listStudentApiWorker() {
     }
 }
 
-function* postStudentWatcher() {
-    yield takeLatest(STUDENT_ADD_REQUESTED, postStudentApiWorker);
+
+// function* postStudentWatcher() {
+//     yield takeLatest(STUDENT_ADD_REQUESTED, postStudentApiWorker);
+// }
+
+/*
+ActionChannel Saga
+actionChannel can buffer incoming messages
+By default, actionChannel buffers all incoming messages without limit
+none = no buffer
+fixed(limit) = buffer fix with limit
+expanding(initialSize) = same as fix, when overflow, expand dynamically
+dropping(limit) = same as fix, when overflow, drop request
+sliding(limit) = same as fix, when overflow, add new request at the end, and drop the oldest request
+ */
+
+function* watchPostStudentRequests() {
+    const postStudentRequestChan = yield actionChannel(STUDENT_ADD_REQUESTED, buffers.expanding(1));
+    while (true) {
+        const action = yield take(postStudentRequestChan)
+        yield call(postStudentApiWorker, action)
+    }
 }
 
 function* getStudentWatcher() {
@@ -41,5 +62,5 @@ function* getStudentWatcher() {
 }
 
 export const studentSaga = [
-    postStudentWatcher, getStudentWatcher
+    watchPostStudentRequests, getStudentWatcher
 ]
